@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Minitask 2</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 20px;
+        height: 60px;
+        border-bottom: 1px solid #ddd;
+      }
+
+      .hamburger {
+        font-size: 24px;
+        cursor: pointer;
+        border: none;
+        background: none;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      nav {
+        display: none;
+        flex-direction: column;
+        gap: 10px;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        right: 0;
+        background: #f3f3f3;
+        padding: 10px 20px;
+      }
+
+      nav.show {
+        display: flex;
+        align-items: center;
+      }
+
+      nav a {
+        text-decoration: none;
+        color: #333;
+      }
+
+      div {
+        position: relative;
+        display: inline-block;
+      }
+
+      main {
+        height: 80vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      input {
+        width: 270px;
+        padding-right: 35px;
+      }
+
+      i {
+        position: absolute;
+        right: 05px;
+        top: 55%;
+        transform: translateY(-50%);
+        cursor: pointer;
+      }
+
+      @media screen and (min-width: 768px) {
+        .hamburger {
+          display: none;
+        }
+
+        nav {
+          position: static;
+          display: flex;
+          flex-direction: row;
+          background: transparent;
+          padding: 0;
+          gap: 10px;
+        }
+
+        nav.show {
+          display: flex;
+        }
+
+        nav a {
+          width: 100px;
+          height: 40px;
+          background-color: aqua;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #000;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Muhammad Hilmy</h1>
+      <button id="hamburger" class="hamburger">&#9776;</button>
+
+      <nav id="nav">
+        <a href="#">about</a>
+        <a href="#">project</a>
+        <a href="#">contact</a>
+      </nav>
+    </header>
+
+    <main>
+      <form>
+        <label for="password">password</label><br />
+        <div>
+          <input type="password" name="password" id="password" />
+          <i class="fa-solid fa-eye"></i>
+        </div>
+      </form>
+    </main>
+
+    <script>
+      function eyeToggle() {
+        const passwordInput = document.getElementById("password");
+        const eyeIcon = document.querySelector(".fa-solid.fa-eye");
+
+        eyeIcon.addEventListener("click", function () {
+          if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            eyeIcon.classList.remove("fa-eye");
+            eyeIcon.classList.add("fa-eye-slash");
+          } else {
+            passwordInput.type = "password";
+            eyeIcon.classList.remove("fa-eye-slash");
+            eyeIcon.classList.add("fa-eye");
+          }
+        });
+      }
+
+      function burger() {
+        const hamburger = document.getElementById("hamburger");
+        const nav = document.getElementById("nav");
+
+        hamburger.addEventListener("click", () => {
+          nav.classList.toggle("show");
+        });
+      }
+
+      const main = () => {
+        eyeToggle();
+        burger();
+      };
+
+      main();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Minitask 3</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      header {
+        display: flex;
+        justify-content: center;
+      }
+
+      h1 {
+        margin-top: 50px;
+      }
+
+      .container {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        background-color: dodgerblue;
+        padding: 5px;
+        gap: 5px;
+        margin: 50px;
+      }
+
+      .container div {
+        background-color: #f1f1f1;
+        color: #000;
+        padding: 10px;
+        font-size: 30px;
+        text-align: center;
+        height: 300px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Pokemon Character</h1>
+    </header>
+    <main>
+      <div class="container">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </main>
+
+    <script>
+      async function fetchUrlToJSON(url) {
+        const response = await fetch(url);
+        return response.json();
+      }
+
+      const baseUrl = "https://pokeapi.co/api/v2/pokemon?limit=30";
+
+      async function getPokemon(apiUrl) {
+        const data = await fetchUrlToJSON(apiUrl);
+
+        const names = data.results.map((item) => item.name);
+        const detailUrls = data.results.map((item) => item.url);
+
+        // let dataPokemon = {
+        //   name: "",
+        //   image: "",
+        // };
+
+        // ambil semua data pokemon
+        const pokemons = await Promise.all(
+          detailUrls.map(async (detailUrl) => {
+            const pokemonData = await fetchUrlToJSON(detailUrl);
+
+            // kalau tetap mau ambil dari forms:
+            // const forms = pokemonData.forms;
+            // const images = await Promise.all(
+            //   forms.map(async (form) => {
+            //     const imageData = await fetchUrlToJSON(form.url);
+            //     return imageData.sprites.back_default;
+            //   })
+            // );
+            // const image = images[0];
+
+            const image = pokemonData.sprites.front_default; // simple & aman [web:30][web:33]
+
+            // return {
+            //   name: pokemonData.name,
+            //   image: image,
+            // };
+
+            // let dataPokemon = {
+            //   name: pokemonData.name,
+            //   image: image,
+            // };
+
+            return {
+              name: pokemonData.name,
+              image: image,
+              type: pokemonData.types.map((item) => item.type.name),
+            };
+          })
+        );
+
+        // console.log(pokemons.name);
+        pokemons.forEach((pokemon) => {
+          console.log(pokemon.name, pokemon.type);
+        });
+
+        // await Promise.all(
+        //   detailUrls.map(async (detailUrl) => {
+        //     const pokemonData = await fetchUrlToJSON(detailUrl);
+        //     const form = pokemonData.forms;
+
+        //     const dataImage = await Promise.all(
+        //       form.map(async (form) => {
+        //         const imageData = await fetchUrlToJSON(form.url);
+        //         return imageData.sprites.back_default;
+        //       })
+        //     );
+
+        // const image = dataImage.spirites.back_default;
+
+        // let pokemons = [
+        //   dataImage,
+        //   pokemonData.name,
+        // abilities: pokemonData.abilities.map((item) => item.ability.name),
+        // ];
+
+        // console.log("image: " + pokemon.image);
+        // console.log("name: " + pokemon.name);
+        const cards = document.querySelectorAll(".container > div");
+
+        pokemons.forEach((pokemon, index) => {
+          if (!cards[index]) return;
+
+          const card = cards[index];
+          card.innerHTML = "";
+
+          const img = document.createElement("img");
+          img.src = pokemon.image;
+          img.alt = pokemon.name;
+          img.style.maxWidth = "100%";
+          img.style.maxHeight = "70%";
+
+          const title = document.createElement("p");
+          title.textContent = pokemon.name;
+
+          const type = document.createElement("p");
+          type.textContent = pokemon.type.join(", ");
+
+          card.appendChild(img);
+          card.appendChild(title);
+          card.appendChild(type);
+        });
+      }
+      getPokemon(baseUrl);
+    </script>
+  </body>
+</html>

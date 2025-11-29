@@ -17,25 +17,27 @@
       }
 
       h1 {
-        margin-top: 50px;
+        margin-top: 10px;
+        margin-bottom: 10px;
       }
 
       .container {
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-template-columns: repeat(4, 250px);
         background-color: dodgerblue;
-        padding: 5px;
-        gap: 5px;
-        margin: 50px;
+        padding: 80px;
+        gap: 20px;
+        margin: auto;
+        width: 80%;
+        margin-bottom: 50px;
       }
 
       .container div {
         background-color: #f1f1f1;
         color: #000;
-        padding: 10px;
         font-size: 30px;
         text-align: center;
-        height: 300px;
+        height: 350px;
       }
     </style>
   </head>
@@ -81,6 +83,33 @@
     </main>
 
     <script>
+      // CEK STATUS LOGIN
+      if (localStorage.getItem("isLogin") !== "true") {
+        window.location.href = "./minitask4/login.html"; // Balik ke login
+      }
+
+      // TAMBAH TOMBOL LOGOUT DI HEADER
+      const header = document.querySelector("header");
+      const logoutBtn = document.createElement("button");
+      logoutBtn.textContent = "Logout";
+      logoutBtn.style.marginLeft = "20px";
+      logoutBtn.style.marginTop = "10px";
+      logoutBtn.style.marginBottom = "10px";
+      logoutBtn.style.padding = "6px 12px";
+      logoutBtn.style.background = "crimson";
+      logoutBtn.style.color = "white";
+      logoutBtn.style.border = "none";
+      logoutBtn.style.borderRadius = "4px";
+      logoutBtn.style.cursor = "pointer";
+
+      header.appendChild(logoutBtn);
+
+      logoutBtn.addEventListener("click", () => {
+        localStorage.removeItem("isLogin");
+        localStorage.removeItem("username");
+        window.location.href = "./minitask4/login.html";
+      });
+
       async function fetchUrlToJSON(url) {
         const response = await fetch(url);
         return response.json();
@@ -94,37 +123,12 @@
         const names = data.results.map((item) => item.name);
         const detailUrls = data.results.map((item) => item.url);
 
-        // let dataPokemon = {
-        //   name: "",
-        //   image: "",
-        // };
-
         // ambil semua data pokemon
         const pokemons = await Promise.all(
           detailUrls.map(async (detailUrl) => {
             const pokemonData = await fetchUrlToJSON(detailUrl);
 
-            // kalau tetap mau ambil dari forms:
-            // const forms = pokemonData.forms;
-            // const images = await Promise.all(
-            //   forms.map(async (form) => {
-            //     const imageData = await fetchUrlToJSON(form.url);
-            //     return imageData.sprites.back_default;
-            //   })
-            // );
-            // const image = images[0];
-
             const image = pokemonData.sprites.front_default; // simple & aman [web:30][web:33]
-
-            // return {
-            //   name: pokemonData.name,
-            //   image: image,
-            // };
-
-            // let dataPokemon = {
-            //   name: pokemonData.name,
-            //   image: image,
-            // };
 
             return {
               name: pokemonData.name,
@@ -138,29 +142,6 @@
         pokemons.forEach((pokemon) => {
           console.log(pokemon.name, pokemon.type);
         });
-
-        // await Promise.all(
-        //   detailUrls.map(async (detailUrl) => {
-        //     const pokemonData = await fetchUrlToJSON(detailUrl);
-        //     const form = pokemonData.forms;
-
-        //     const dataImage = await Promise.all(
-        //       form.map(async (form) => {
-        //         const imageData = await fetchUrlToJSON(form.url);
-        //         return imageData.sprites.back_default;
-        //       })
-        //     );
-
-        // const image = dataImage.spirites.back_default;
-
-        // let pokemons = [
-        //   dataImage,
-        //   pokemonData.name,
-        // abilities: pokemonData.abilities.map((item) => item.ability.name),
-        // ];
-
-        // console.log("image: " + pokemon.image);
-        // console.log("name: " + pokemon.name);
         const cards = document.querySelectorAll(".container > div");
 
         pokemons.forEach((pokemon, index) => {
@@ -173,16 +154,20 @@
           img.src = pokemon.image;
           img.alt = pokemon.name;
           img.style.maxWidth = "100%";
-          img.style.maxHeight = "70%";
+          img.style.maxHeight = "100%";
+          img.style.zoom = "2";
 
-          const title = document.createElement("p");
+          const title = document.createElement("h2");
           title.textContent = pokemon.name;
+          title.style.fontSize = "28px";
+          title.style.marginTop = "20px";
+          // title.style.fontWeight = "700";
 
           const type = document.createElement("p");
           type.textContent = pokemon.type.join(", ");
 
-          card.appendChild(img);
           card.appendChild(title);
+          card.appendChild(img);
           card.appendChild(type);
         });
       }

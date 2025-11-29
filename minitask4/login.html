@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background-color: #f2f2f2;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100dvh;
+      }
+
+      main > div {
+        height: 300px;
+        width: 300px;
+        background-color: white;
+        border-radius: 7px;
+      }
+
+      h1 {
+        justify-content: center;
+        display: flex;
+        padding-top: 30px;
+      }
+
+      form {
+        padding-top: 20px;
+        display: flex;
+        flex-direction: column;
+        padding: 25px 40px;
+      }
+
+      input {
+        border-radius: 3px;
+        border: 1px solid #9b9a9a;
+        height: 22px;
+      }
+
+      button[type="submit"] {
+        margin-top: 5px;
+        margin-left: 130px;
+        padding: 5px;
+        border-radius: 3px;
+        background-color: #14a44d;
+        border: none;
+        color: white;
+      }
+
+      label {
+        margin-bottom: 7px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div>
+        <h1>Login</h1>
+        <form action="submit">
+          <label for="username">Username:</label>
+          <input type="text" name="username" id="username" /><br />
+          <label for="password">Password:</label>
+          <input type="password" name="password" id="password" /><br />
+          <button type="submit">submit</button>
+        </form>
+      </div>
+    </main>
+
+    <script>
+      const form = document.querySelector("form");
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const username = e.target.username.value;
+        const password = e.target.password.value;
+
+        // VALIDASI AKUN
+        if (username === "admin" && password === "123456") {
+          // Simpan status login
+          localStorage.setItem("isLogin", "true");
+          localStorage.setItem("username", username);
+
+          // Redirect ke halaman minitask3
+          window.location.href = "../minitask3.html";
+        } else {
+          alert("Username atau password salah!");
+        }
+      });
+    </script>
+  </body>
+</html>
